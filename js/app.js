@@ -24,21 +24,18 @@ class ExampleTemplate extends Template {
         return "template.html";
     }
 
-    load() {
+    load(element) {
         Post.all(function (posts) {
-            this.render("html", {"posts": posts});
+            this.render(element, {"posts": posts});
         }.bind(this));
     }
 }
 
 
-var router = new Router();
+var router = new Router("body");
 
 
-router.registerRoute("home", function () {
-    var t = new ExampleTemplate();
-    t.load();
-});
+router.registerRoute("home", new ExampleTemplate());
 
 
 setRouter(router);
