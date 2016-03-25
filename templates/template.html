@@ -2,9 +2,9 @@
 
 
 <div id="posts">
-    {{#posts}}
-    <p>{{ text }}</p>
+    <% for(var i in this.posts){ %>
+    <p><% this.posts[i].text %></p>
 
-    {{/posts}}
+    <% } %>
 
 </div>
