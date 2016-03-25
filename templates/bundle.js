@@ -109,9 +109,9 @@
 	        }
 	    }, {
 	        key: "load",
-	        value: function load() {
+	        value: function load(element) {
 	            Post.all(function (posts) {
-	                this.render("html", { "posts": posts });
+	                this.render(element, { "posts": posts });
 	            }.bind(this));
 	        }
 	    }]);
@@ -119,12 +119,9 @@
 	    return ExampleTemplate;
 	}(_template.Template);
 
-	var router = new _router.Router();
+	var router = new _router.Router("body");
 
-	router.registerRoute("home", function () {
-	    var t = new ExampleTemplate();
-	    t.load();
-	});
+	router.registerRoute("home", new ExampleTemplate());
 
 	(0, _router.setRouter)(router);
 
@@ -10849,10 +10846,11 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var Router = exports.Router = function () {
-	    function Router() {
+	    function Router(element) {
 	        _classCallCheck(this, Router);
 
 	        this.routes = {};
+	        this.element = element;
 	    }
 
 	    _createClass(Router, [{
@@ -10866,9 +10864,9 @@
 	            var path = window.location.hash.substring(1);
 
 	            try {
-	                this.routes[path]();
+	                this.routes[path].load(this.element);
 	            } catch (ex) {
-	                (0, _jquery2.default)("body").html("");
+	                (0, _jquery2.default)(this.element).html("404");
 	            }
 	        }
 	    }]);
