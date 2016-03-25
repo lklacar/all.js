@@ -1,7 +1,7 @@
 import {API, Model} from "./model.js"
 import {Template} from "./template.js";
 import $ from "jquery";
-
+import {Router, setRouter} from "./router.js"
 
 class Post extends Model {
     static getUrlConfig() {
@@ -26,10 +26,19 @@ class ExampleTemplate extends Template {
 
     load() {
         Post.all(function (posts) {
-            this.render("#asd", {"posts": posts});
+            this.render("html", {"posts": posts});
         }.bind(this));
     }
 }
 
-var t = new ExampleTemplate();
-t.load();
+
+var router = new Router();
+
+
+router.registerRoute("home", function () {
+    var t = new ExampleTemplate();
+    t.load();
+});
+
+
+setRouter(router);
