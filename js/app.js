@@ -26,7 +26,6 @@ class ExampleTemplate extends Template {
 
     load() {
         Post.all(function (posts) {
-            posts = posts.concat(posts);
             this.render("#asd", {"posts": posts});
         }.bind(this));
     }
