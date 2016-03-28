@@ -2,7 +2,7 @@ import $ from "jquery";
 import {API} from "./model.js";
 import Mustache from "mustache";
 
-export class Template {
+export class Controller {
 
     getTemplateUrl() {
         return "";
