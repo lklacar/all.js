@@ -1,5 +1,5 @@
 import {API, Model} from "./model.js"
-import {Template} from "./template.js";
+import {Controller} from "./controller.js";
 import $ from "jquery";
 import {Router, setRouter} from "./router.js"
 
@@ -18,7 +18,7 @@ class Post extends Model {
 }
 
 
-class ExampleTemplate extends Template {
+class ExampleTemplate extends Controller {
 
     getTemplateUrl() {
         return "template.html";

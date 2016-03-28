@@ -50,7 +50,7 @@
 
 	var _model = __webpack_require__(1);
 
-	var _template = __webpack_require__(3);
+	var _controller = __webpack_require__(7);
 
 	var _jquery = __webpack_require__(2);
 
@@ -93,8 +93,8 @@
 	    return Post;
 	}(_model.Model);
 
-	var ExampleTemplate = function (_Template) {
-	    _inherits(ExampleTemplate, _Template);
+	var ExampleTemplate = function (_Controller) {
+	    _inherits(ExampleTemplate, _Controller);
 
 	    function ExampleTemplate() {
 	        _classCallCheck(this, ExampleTemplate);
@@ -117,7 +117,7 @@
 	    }]);
 
 	    return ExampleTemplate;
-	}(_template.Template);
+	}(_controller.Controller);
 
 	var router = new _router.Router("body");
 
@@ -134,7 +134,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.Model = exports.API = undefined;
+	exports.Model = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -142,45 +142,11 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
+	var _api = __webpack_require__(6);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var API = exports.API = function () {
-	    function API() {
-	        _classCallCheck(this, API);
-	    }
-
-	    _createClass(API, null, [{
-	        key: "post",
-	        value: function post(url, data) {
-	            var dataType = arguments.length <= 2 || arguments[2] === undefined ? "json" : arguments[2];
-
-	            _jquery2.default.ajax({
-	                type: "POST",
-	                url: url,
-	                data: data,
-	                success: function success(e) {},
-	                dataType: "json"
-	            });
-	        }
-	    }, {
-	        key: "get",
-	        value: function get(url, callback) {
-	            var dataType = arguments.length <= 2 || arguments[2] === undefined ? "json" : arguments[2];
-
-	            _jquery2.default.ajax({
-	                type: "GET",
-	                url: url,
-	                success: callback,
-	                error: function error(xhr, status, _error) {},
-	                dataType: "json"
-	            });
-	        }
-	    }]);
-
-	    return API;
-	}();
 
 	var Model = exports.Model = function () {
 	    function Model() {
@@ -205,7 +171,7 @@
 	    }, {
 	        key: "save",
 	        value: function save() {
-	            API.post(this.constructor.getUrlConfig().CREATE, this.getData());
+	            _api.API.post(this.constructor.getUrlConfig().CREATE, this.getData());
 	        }
 	    }], [{
 	        key: "getUrlConfig",
@@ -222,7 +188,7 @@
 	    }, {
 	        key: "all",
 	        value: function all(callback) {
-	            API.get(this.getUrlConfig().ALL, function (array) {
+	            _api.API.get(this.getUrlConfig().ALL, function (array) {
 	                var data = [];
 	                for (var i = 0; i < array.length; i++) {
 	                    var elem = array[i];
@@ -237,7 +203,7 @@
 	        key: "get",
 	        value: function get(id, callback) {
 
-	            API.get(this.getUrlConfig().GET.replace("\<id\>", id.toString() + "/"), function (data) {
+	            _api.API.get(this.getUrlConfig().GET.replace("\<id\>", id.toString() + "/"), function (data) {
 	                var temp = new this();
 	                temp.setup(data);
 	                callback(temp);
@@ -10097,99 +10063,7 @@
 
 
 /***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Template = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _jquery = __webpack_require__(2);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
-	var _model = __webpack_require__(1);
-
-	var _mustache = __webpack_require__(4);
-
-	var _mustache2 = _interopRequireDefault(_mustache);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Template = exports.Template = function () {
-	    function Template() {
-	        _classCallCheck(this, Template);
-	    }
-
-	    _createClass(Template, [{
-	        key: "getTemplateUrl",
-	        value: function getTemplateUrl() {
-	            return "";
-	        }
-	    }, {
-	        key: "load",
-	        value: function load() {}
-	    }, {
-	        key: "render",
-	        value: function render(tag) {
-	            var data = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
-
-
-	            function process(html) {
-
-	                (0, _jquery2.default)(tag).html(this.parse(html, data));
-	            }
-
-	            process = process.bind(this);
-
-	            _jquery2.default.ajax({
-	                type: "GET",
-	                url: this.getTemplateUrl(),
-	                success: process,
-	                error: function error(xhr, status, _error) {},
-	                dataType: "html"
-	            });
-	        }
-	    }, {
-	        key: "parse",
-	        value: function parse(html, data) {
-
-	            html = (0, _jquery2.default)(html);
-
-	            var elements = html.find("*[data-bind]");
-
-	            elements.each(function (i, element) {
-	                element = (0, _jquery2.default)(element);
-	                var bindDefinition = element.data("bind");
-
-	                var source = data[bindDefinition.split("->")[0].trim()];
-	                var property = bindDefinition.split("->")[1].trim();
-
-	                if (property == "text") element.text(source);else element.attr(property, source);
-	            });
-
-	            var newHtml = "";
-	            for (var i = 0; i < html.length; i++) {
-	                var outerHtml = html.get(i).outerHTML;
-
-	                if (outerHtml != undefined) newHtml += outerHtml;
-	            }
-
-	            return newHtml;
-	        }
-	    }]);
-
-	    return Template;
-	}();
-
-/***/ },
+/* 3 */,
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -10888,6 +10762,156 @@
 	        window.router.check();
 	    });
 	}
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.API = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _jquery = __webpack_require__(2);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var API = exports.API = function () {
+	    function API() {
+	        _classCallCheck(this, API);
+	    }
+
+	    _createClass(API, null, [{
+	        key: "post",
+	        value: function post(url, data) {
+	            var dataType = arguments.length <= 2 || arguments[2] === undefined ? "json" : arguments[2];
+
+	            _jquery2.default.ajax({
+	                type: "POST",
+	                url: url,
+	                data: data,
+	                success: function success(e) {},
+	                dataType: "json"
+	            });
+	        }
+	    }, {
+	        key: "get",
+	        value: function get(url, callback) {
+	            var dataType = arguments.length <= 2 || arguments[2] === undefined ? "json" : arguments[2];
+
+	            _jquery2.default.ajax({
+	                type: "GET",
+	                url: url,
+	                success: callback,
+	                error: function error(xhr, status, _error) {},
+	                dataType: "json"
+	            });
+	        }
+	    }]);
+
+	    return API;
+	}();
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Controller = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _jquery = __webpack_require__(2);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _model = __webpack_require__(1);
+
+	var _mustache = __webpack_require__(4);
+
+	var _mustache2 = _interopRequireDefault(_mustache);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Controller = exports.Controller = function () {
+	    function Controller() {
+	        _classCallCheck(this, Controller);
+	    }
+
+	    _createClass(Controller, [{
+	        key: "getTemplateUrl",
+	        value: function getTemplateUrl() {
+	            return "";
+	        }
+	    }, {
+	        key: "load",
+	        value: function load() {}
+	    }, {
+	        key: "render",
+	        value: function render(tag) {
+	            var data = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+
+
+	            function process(html) {
+
+	                (0, _jquery2.default)(tag).html(this.parse(html, data));
+	            }
+
+	            process = process.bind(this);
+
+	            _jquery2.default.ajax({
+	                type: "GET",
+	                url: this.getTemplateUrl(),
+	                success: process,
+	                error: function error(xhr, status, _error) {},
+	                dataType: "html"
+	            });
+	        }
+	    }, {
+	        key: "parse",
+	        value: function parse(html, data) {
+
+	            html = (0, _jquery2.default)(html);
+
+	            var elements = html.find("*[data-bind]");
+
+	            elements.each(function (i, element) {
+	                element = (0, _jquery2.default)(element);
+	                var bindDefinition = element.data("bind");
+
+	                var source = data[bindDefinition.split("->")[0].trim()];
+	                var property = bindDefinition.split("->")[1].trim();
+
+	                if (property == "text") element.text(source);else element.attr(property, source);
+	            });
+
+	            var newHtml = "";
+	            for (var i = 0; i < html.length; i++) {
+	                var outerHtml = html.get(i).outerHTML;
+
+	                if (outerHtml != undefined) newHtml += outerHtml;
+	            }
+
+	            return newHtml;
+	        }
+	    }]);
+
+	    return Controller;
+	}();
 
 /***/ }
 /******/ ]);
