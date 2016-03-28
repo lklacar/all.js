@@ -2,9 +2,8 @@
 
 
 <div id="posts">
-    <% for(var i in this.posts){ %>
-    <p><% this.posts[i].text %></p>
-
-    <% } %>
+    <div data-bind="data -> text"></div>
 
 </div>
+
+

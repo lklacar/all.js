@@ -111,7 +111,7 @@
 	        key: "load",
 	        value: function load(element) {
 	            Post.all(function (posts) {
-	                this.render(element, { "posts": posts });
+	                this.render(element, { "data": "proba" });
 	            }.bind(this));
 	        }
 	    }]);
@@ -10123,26 +10123,6 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var _parse = function _parse(html, options) {
-
-	    var re = /<%([^%>]+)?%>/g,
-	        reExp = /(^( )?(if|for|else|switch|case|break|{|}))(.*)?/g,
-	        code = 'var r=[];\n',
-	        cursor = 0,
-	        match;
-	    var add = function add(line, js) {
-	        js ? code += line.match(reExp) ? line + '\n' : 'r.push(' + line + ');\n' : code += line != '' ? 'r.push("' + line.replace(/"/g, '\\"') + '");\n' : '';
-	        return add;
-	    };
-	    while (match = re.exec(html)) {
-	        add(html.slice(cursor, match.index))(match[1], true);
-	        cursor = match.index + match[0].length;
-	    }
-	    add(html.substr(cursor, html.length - cursor));
-	    code += 'return r.join("");';
-	    return new Function(code.replace(/[\r\t\n]/g, '')).apply(options);
-	};
-
 	var Template = exports.Template = function () {
 	    function Template() {
 	        _classCallCheck(this, Template);
@@ -10180,7 +10160,29 @@
 	    }, {
 	        key: "parse",
 	        value: function parse(html, data) {
-	            return _parse(html, data);
+
+	            html = (0, _jquery2.default)(html);
+
+	            var elements = html.find("*[data-bind]");
+
+	            elements.each(function (i, element) {
+	                element = (0, _jquery2.default)(element);
+	                var bindDefinition = element.data("bind");
+
+	                var source = data[bindDefinition.split("->")[0].trim()];
+	                var property = bindDefinition.split("->")[1].trim();
+
+	                if (property == "text") element.text(source);else element.attr(property, source);
+	            });
+
+	            var newHtml = "";
+	            for (var i = 0; i < html.length; i++) {
+	                var outerHtml = html.get(i).outerHTML;
+
+	                if (outerHtml != undefined) newHtml += outerHtml;
+	            }
+
+	            return newHtml;
 	        }
 	    }]);
 
