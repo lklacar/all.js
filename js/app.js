@@ -26,7 +26,7 @@ class ExampleTemplate extends Template {
 
     load(element) {
         Post.all(function (posts) {
-            this.render(element, {"posts": posts});
+            this.render(element, {"data": "proba"});
         }.bind(this));
     }
 }
