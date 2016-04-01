@@ -1,7 +1,8 @@
 import {API, Model} from "./model.js"
-import {Controller} from "./controller.js";
+import {Template} from "./template.js";
 import $ from "jquery";
 import {Router, setRouter} from "./router.js"
+import {Component} from "./component"
 
 class Post extends Model {
     static getUrlConfig() {
@@ -18,7 +19,15 @@ class Post extends Model {
 }
 
 
-class ExampleTemplate extends Controller {
+class ExampleComponent extends Component {
+
+    getComponentUrl() {
+        return "component.html"
+    }
+
+}
+
+class ExampleTemplate extends Template {
 
     getTemplateUrl() {
         return "template.html";
@@ -26,13 +35,18 @@ class ExampleTemplate extends Controller {
 
     load(element) {
         Post.all(function (posts) {
-            this.render(element, {"data": "proba"});
+            this.render(element, {
+                data: "a",
+                component: new ExampleComponent()
+
+
+            });
         }.bind(this));
     }
 }
 
 
-var router = new Router("body");
+var router = new Router('body');
 
 
 router.registerRoute("home", new ExampleTemplate());

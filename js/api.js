@@ -9,7 +9,7 @@ export class API {
             success: function (e) {
 
             },
-            dataType: "json"
+            dataType: dataType
         });
     }
 
@@ -19,9 +19,9 @@ export class API {
             url: url,
             success: callback,
             error: function (xhr, status, error) {
-
+                console.log(xhr);
             },
-            dataType: "json"
+            dataType: dataType
         });
     }
 }
