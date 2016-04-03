@@ -4,7 +4,7 @@ import {includeData, injectData} from "./template-definitions.js";
 import {TemplateEngine} from "./template-engine.js";
 
 
-export class Template {
+export default class Template {
 
     getTemplateUrl() {
         return ""

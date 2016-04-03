@@ -1,5 +1,5 @@
 import Model from "all.js/model";
-
+import Template from "all.js/template";
 
 class ExampleTemplate extends Template {
 
