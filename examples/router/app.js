@@ -1,5 +1,6 @@
 import Model from "all.js/model";
 import {Router, setRouter} from "all.js/router";
+import Template from "all.js/template";
 
 class ExampleTemplate extends Template {
 
