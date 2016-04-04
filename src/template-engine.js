@@ -2,7 +2,7 @@ import {includeData, injectData} from "./template-definitions.js";
 import $ from "jquery"
 
 
-export class TemplateEngine {
+export default class TemplateEngine {
 
     constructor() {
         this.handlers = {
