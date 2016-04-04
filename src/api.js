@@ -1,6 +1,6 @@
 import $ from "jquery"
 
-export class API {
+export default class API {
     static post(url, data, dataType = "json") {
         $.ajax({
             type: "POST",

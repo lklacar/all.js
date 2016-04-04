@@ -1,8 +1,9 @@
-import {API, Model} from "./model.js"
-import {Template} from "./template.js";
+import Model from "./model.js"
+import Controller from "./controller.js";
 import $ from "jquery";
-import {Router, setRouter} from "./router.js"
-import {Component} from "./component"
+import Router, {setRouter} from "./router.js"
+import Component from "./component"
+
 
 class Post extends Model {
     static getUrlConfig() {
@@ -21,27 +22,28 @@ class Post extends Model {
 
 class ExampleComponent extends Component {
 
-    getComponentUrl() {
-        return "component.html"
+    getTemplate() {
+        return "this is a template";
     }
 
 }
 
-class ExampleTemplate extends Template {
+class ExampleTemplate extends Controller {
 
-    getTemplateUrl() {
-        return "template.html";
+    getTemplate() {
+
+        return "<div data-include='component'></div>";
     }
 
     load(element) {
-        Post.all(function (posts) {
-            this.render(element, {
-                data: "a",
-                component: new ExampleComponent()
+
+        this.render(element, {
+            data: "a",
+            component: new ExampleComponent()
 
 
-            });
-        }.bind(this));
+        });
+
     }
 }
 

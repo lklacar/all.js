@@ -3,13 +3,12 @@ import {API} from "./api.js";
 export function includeData(element, doc, engine, selector, data) {
 
     var includeDefinition = element.getAttribute('data-include');
+    var html = data[includeDefinition].load();
 
+    element.removeAttribute('data-include');
+    element.innerHTML = html;
+    engine.traverse(element, doc, engine, selector, data);
 
-    data[includeDefinition].load(function (html) {
-        element.removeAttribute('data-include');
-        element.innerHTML = html;
-        engine.traverse(element, doc, engine, selector, data);
-    }.bind(this));
 
 }
 

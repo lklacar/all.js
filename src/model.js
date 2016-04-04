@@ -1,8 +1,8 @@
 import $ from "jquery";
 
-import {API} from "./api.js";
+import API from "./api.js";
 
-export class Model {
+export default class Model {
 
     static getUrlConfig() {
         return {

@@ -1,14 +1,14 @@
-import {API} from "./api.js"
+import API from "./api.js"
 
-export class Component {
+export default class Component {
 
-    getComponentUrl() {
+    getTemplate() {
         return ""
     }
 
-    load(callback) {
+    load() {
+        return this.getTemplate();
 
-        API.get(this.getComponentUrl(), callback, 'html');
     }
 
 

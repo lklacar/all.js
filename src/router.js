@@ -1,7 +1,7 @@
 import $ from "jquery";
 
 
-export class Router {
+export default class Router {
 
     constructor(element) {
         this.routes = {};
@@ -17,11 +17,9 @@ export class Router {
     check() {
         var path = window.location.hash.substring(1);
 
-        try {
+
             this.routes[path].load(this.element);
-        } catch (ex) {
-            $(this.element).html("404");
-        }
+
 
 
     }
