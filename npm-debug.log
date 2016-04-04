@@ -1,0 +1,101 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'publish' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.37
+4 verbose node symlink /usr/bin/node
+5 verbose publish [ '.' ]
+6 verbose cache add [ '.', null ]
+7 verbose cache add name=undefined spec="." args=[".",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: '.',
+8 verbose parsed url   path: '.',
+8 verbose parsed url   href: '.' }
+9 silly lockFile 3a52ce78- .
+10 verbose lock . /home/lklacar/.npm/3a52ce78-.lock
+11 verbose tar pack [ '/home/lklacar/.npm/all.js/1.0.13/package.tgz', '.' ]
+12 verbose tarball /home/lklacar/.npm/all.js/1.0.13/package.tgz
+13 verbose folder .
+14 info prepublish all.js@1.0.13
+15 silly lockFile 1f1177db-tar tar://.
+16 verbose lock tar://. /home/lklacar/.npm/1f1177db-tar.lock
+17 silly lockFile 910dfa4f-ar-npm-all-js-1-0-13-package-tgz tar:///home/lklacar/.npm/all.js/1.0.13/package.tgz
+18 verbose lock tar:///home/lklacar/.npm/all.js/1.0.13/package.tgz /home/lklacar/.npm/910dfa4f-ar-npm-all-js-1-0-13-package-tgz.lock
+19 silly lockFile 1f1177db-tar tar://.
+20 silly lockFile 1f1177db-tar tar://.
+21 silly lockFile 910dfa4f-ar-npm-all-js-1-0-13-package-tgz tar:///home/lklacar/.npm/all.js/1.0.13/package.tgz
+22 silly lockFile 910dfa4f-ar-npm-all-js-1-0-13-package-tgz tar:///home/lklacar/.npm/all.js/1.0.13/package.tgz
+23 silly lockFile c7c23eab-klacar-npm-all-js-1-0-13-package /home/lklacar/.npm/all.js/1.0.13/package
+24 verbose lock /home/lklacar/.npm/all.js/1.0.13/package /home/lklacar/.npm/c7c23eab-klacar-npm-all-js-1-0-13-package.lock
+25 silly lockFile c7c23eab-klacar-npm-all-js-1-0-13-package /home/lklacar/.npm/all.js/1.0.13/package
+26 silly lockFile c7c23eab-klacar-npm-all-js-1-0-13-package /home/lklacar/.npm/all.js/1.0.13/package
+27 silly lockFile 3a52ce78- .
+28 silly lockFile 3a52ce78- .
+29 silly publish { name: 'all.js',
+29 silly publish   version: '1.0.13',
+29 silly publish   description: 'all.js framework',
+29 silly publish   main: 'app.js',
+29 silly publish   scripts: { test: 'echo "Error: no test specified" && exit 1' },
+29 silly publish   author: { name: 'Luka Klacar' },
+29 silly publish   license: 'ISC',
+29 silly publish   devDependencies:
+29 silly publish    { 'babel-core': '^6.7.4',
+29 silly publish      'babel-loader': '^6.2.4',
+29 silly publish      'babel-preset-es2015': '^6.6.0',
+29 silly publish      webpack: '^1.12.14' },
+29 silly publish   dependencies: { jquery: '^2.2.2' },
+29 silly publish   readme: '## Install\n\n```\n$ npm install all.js\n```\n\n## Usage\n\n### Model example\n```js\nimport Model from "all.js/model";\n\n\nclass Post extends Model {\n    static getUrlConfig() {\n        var base = "http://localhost:8000/api/";\n        return {\n            CREATE: base + "posts/",\n            GET: base + "posts/<id>",\n            ALL: base + "posts/",\n            UPDATE: base + "posts/<id>",\n            DELETE_ONE: base + "posts/<id>",\n            DELETE_ALL: base + "posts/"\n        }\n    }\n}\n\n\n// Create model\nvar example = new Post();\nexample.text = "Example text";\nexample.save();\n\n// Retrieve one\nPost.get(id = 0, function (post) {\n    console.log(post);\n});\n\n// Retreve all\nPost.all(function (posts) {\n    console.log(posts);\n});\n```\n\n### Template example\n```js\nimport Model from "all.js/model";\nimport Template from "all.js/template";\n\nclass ExampleTemplate extends Template {\n\n    getTemplateUrl() {\n        return "template.html";\n    }\n\n    load(element) {\n        this.render(element, {\n            data: "Example data"\n        });\n    }\n}\n\nvar template = new ExampleTemplate();\ntemplate.load(\'body\');\n```\n\n```html\n<html>\n<head>\n</head>\n\n<body>\n<h1 data-bind="data -> text"></h1>\n</body>\n\n</html>\n```\n\n### Router example\n```js\nimport Model from "all.js/model";\nimport {Router, setRouter} from "all.js/router";\nimport Template from "all.js/template";\n\nclass ExampleTemplate extends Template {\n\n    getTemplateUrl() {\n        return "template.html";\n    }\n\n    load(element) {\n        this.render(element, {\n            data: "Example data"\n        });\n    }\n}\n\n\nvar router = new Router(\'body\');\nrouter.registerRoute("home", new ExampleTemplate());\nsetRouter(router);\n```\n',
+29 silly publish   readmeFilename: 'README.md',
+29 silly publish   gitHead: 'b49ba2d1142bfb355381b58ac21f8f655a9c69f1',
+29 silly publish   _id: 'all.js@1.0.13',
+29 silly publish   _shasum: 'e921c67856650a2a275c8a71e3da67daefb82a3a',
+29 silly publish   _from: '.' }
+30 verbose request where is /all.js
+31 verbose request registry https://registry.npmjs.org/
+32 verbose request id 8b505143c1b21df8
+33 verbose url raw /all.js
+34 verbose url resolving [ 'https://registry.npmjs.org/', './all.js' ]
+35 verbose url resolved https://registry.npmjs.org/all.js
+36 verbose request where is https://registry.npmjs.org/all.js
+37 info trying registry request attempt 1 at 11:41:29
+38 http PUT https://registry.npmjs.org/all.js
+39 http 403 https://registry.npmjs.org/all.js
+40 verbose headers { 'content-type': 'application/json',
+40 verbose headers   'cache-control': 'max-age=300',
+40 verbose headers   'content-length': '96',
+40 verbose headers   'accept-ranges': 'bytes',
+40 verbose headers   date: 'Mon, 04 Apr 2016 09:41:30 GMT',
+40 verbose headers   via: '1.1 varnish',
+40 verbose headers   connection: 'keep-alive',
+40 verbose headers   'x-served-by': 'cache-ams4133-AMS',
+40 verbose headers   'x-cache': 'MISS',
+40 verbose headers   'x-cache-hits': '0',
+40 verbose headers   'x-timer': 'S1459762889.178789,VS0,VE1539' }
+41 error publish Failed PUT 403
+42 error Error: "You cannot publish over the previously published version 1.0.13." : all.js
+42 error     at RegClient.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:308:14)
+42 error     at Request._callback (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:246:65)
+42 error     at Request.self.callback (/usr/lib/node_modules/npm/node_modules/request/request.js:236:22)
+42 error     at Request.emit (events.js:98:17)
+42 error     at Request.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1142:14)
+42 error     at Request.emit (events.js:117:20)
+42 error     at IncomingMessage.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1096:12)
+42 error     at IncomingMessage.emit (events.js:117:20)
+42 error     at _stream_readable.js:944:16
+42 error     at process._tickCallback (node.js:448:13)
+43 error If you need help, you may report this *entire* log,
+43 error including the npm and node versions, at:
+43 error     <http://github.com/npm/npm/issues>
+44 error System Linux 3.19.0-51-generic
+45 error command "/usr/bin/node" "/usr/bin/npm" "publish"
+46 error cwd /home/lklacar/Desktop/all.js
+47 error node -v v0.10.37
+48 error npm -v 1.4.28
+49 verbose exit [ 1, true ]

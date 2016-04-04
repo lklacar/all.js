@@ -51,7 +51,7 @@ class ExampleTemplate extends Controller {
 var router = new Router('body');
 
 
-router.registerRoute("home", new ExampleTemplate());
+router.registerRoute("home", ExampleTemplate);
 
 
 setRouter(router);

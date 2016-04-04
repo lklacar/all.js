@@ -6,6 +6,10 @@ import TemplateEngine from "./template-engine.js";
 
 export default class Controller {
 
+    constructor(element) {
+        this.element = element;
+    }
+
     getTemplate() {
         return ""
     }

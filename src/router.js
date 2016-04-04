@@ -17,9 +17,7 @@ export default class Router {
     check() {
         var path = window.location.hash.substring(1);
 
-
-            this.routes[path].load(this.element);
-
+        new this.routes[path](this.element).load();
 
 
     }
