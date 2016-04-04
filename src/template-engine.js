@@ -1,4 +1,4 @@
-import {includeData, injectData} from "./template-definitions.js";
+import {includeData, injectData, injectMethods} from "./template-definitions.js";
 import $ from "jquery"
 
 
@@ -6,18 +6,20 @@ export default class TemplateEngine {
 
     constructor() {
         this.handlers = {
+
             "data-bind": injectData,
-            "data-include": includeData
+            "data-include": includeData,
+            "data-method": injectMethods,
         }
 
     }
 
 
-    traverse(element, doc, engine, selector, data) {
+    traverse(element, doc, engine, selector, data, controllerClass) {
 
         Object.keys(this.handlers).forEach(function (key) {
             if (element instanceof HTMLElement && element.hasAttribute(key))
-                this.handlers[key](element, doc, engine, selector, data);
+                this.handlers[key](element, doc, engine, selector, data, controllerClass);
 
             $(selector).html(doc.documentElement.innerHTML);
 
@@ -28,7 +30,7 @@ export default class TemplateEngine {
 
 
         for (var i = 0; i < children.length; i++) {
-            this.traverse(children[i], doc, engine, selector, data);
+            this.traverse(children[i], doc, engine, selector, data, controllerClass);
         }
     }
 }
