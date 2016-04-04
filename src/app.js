@@ -31,13 +31,19 @@ class ExampleComponent extends Component {
 class ExampleTemplate extends Controller {
 
     getTemplate() {
+        var a = "";
 
-        return "<div data-include='component'></div>";
+        for (var i = 0; i < 1; i++) {
+            a += "<div data-method='click -> test'>test</div>";
+        }
+
+
+        return a;
     }
 
-    load(element) {
+    load() {
 
-        this.render(element, {
+        this.render(this.element, {
             data: "a",
             component: new ExampleComponent()
 
@@ -45,13 +51,18 @@ class ExampleTemplate extends Controller {
         });
 
     }
+
+
+    test() {
+        alert('test');
+    }
 }
 
 
 var router = new Router('body');
 
 
-router.registerRoute("home", ExampleTemplate);
+router.registerRoute("", ExampleTemplate);
 
 
 setRouter(router);

@@ -29,7 +29,7 @@ export default class Controller {
 
         var templateEngine = new TemplateEngine();
 
-        templateEngine.traverse(doc, doc, templateEngine, selector, data);
+        templateEngine.traverse(doc, doc, templateEngine, selector, data, this);
 
     }
 

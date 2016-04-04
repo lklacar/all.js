@@ -1,4 +1,6 @@
 import {API} from "./api.js";
+import $ from "jquery";
+
 
 export function includeData(element, doc, engine, selector, data) {
 
@@ -22,5 +24,20 @@ export function injectData(element, doc, engine, selector, data) {
     } else {
         element.setAttribute(destination, data[source]);
     }
+
+}
+
+export function injectMethods(element, doc, engine, selector, data, controllerClass) {
+
+
+    var methodDefinition = element.getAttribute("data-method");
+    var on = methodDefinition.split("->")[0].trim();
+    var methodName = methodDefinition.split("->")[1].trim();
+
+
+    setTimeout(function () {
+        $("[data-method='" + methodDefinition + "']").on(on, controllerClass[methodName]);
+    }.bind(this), 0);
+
 
 }
