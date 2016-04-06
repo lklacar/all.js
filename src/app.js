@@ -1,68 +1,58 @@
-import API from "./api";
-import Component from "./component"
-import Router, {setRouter} from "./router"
-import Controller from "./controller";
-import Model from "./model";
-import TemplateEngine from "./template-engine.js";
+import $ from "jquery"
 
+class Template {
 
-
-class Post extends Model {
-    static getUrlConfig() {
-        var base = "http://localhost:8000/api/";
-        return {
-            CREATE: base + "posts/",
-            GET: base + "posts/<id>",
-            ALL: base + "posts/",
-            UPDATE: base + "posts/<id>",
-            DELETE_ONE: base + "posts/<id>",
-            DELETE_ALL: base + "posts/"
+    constructor() {
+        this.handlers = {
+            "data-bind": dataBind,
         }
     }
-}
 
+    render(selector, html, data) {
 
-class ExampleComponent extends Component {
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(html, "text/html");
+        this.traverse(doc, data);
+        $(selector).html(doc.innerHTML);
 
-    getTemplate() {
-        return require("./template.html");
+    }
+
+    traverse(element, data) {
+
+        this.invokeHandler(element, data);
+        for (var i = 0; i < element.children.length; i++)
+            this.traverse(element.children[i], data);
+    }
+
+    invokeHandler(element, data) {
+        Object.keys(this.handlers).forEach(function (key) {
+
+            if (element instanceof HTMLElement && element.hasAttribute(key))
+                this.handlers[key](element, data, key);
+
+        }.bind(this));
     }
 
 }
 
-class ExampleTemplate extends Controller {
 
-    getTemplate() {
+function dataBind(element, data, attribute) {
 
-        return require("./template.html");
-    }
-
-    load() {
-
-        this.render(this.element, {
-            data: [
-                "a",
-                "b",
-                "c"
-            ],
-            component: new ExampleComponent()
+    var bindDefinition = element.getAttribute(attribute);
 
 
-        });
-
-    }
 
 
-    test() {
-        alert('test');
-    }
+    
+
+
 }
 
 
-var router = new Router('body');
+$(document).ready(function () {
+    var t = new Template();
 
+    t.render('body', require("./template.html"), {});
 
-router.registerRoute("", ExampleTemplate);
+});
 
-
-setRouter(router);
