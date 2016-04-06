@@ -1,4 +1,4 @@
-import {includeData, injectData, injectMethods} from "./template-definitions.js";
+import {includeData, injectData, injectMethods, dataFor} from "./template-definitions.js";
 import $ from "jquery"
 
 
@@ -10,6 +10,7 @@ export default class TemplateEngine {
             "data-bind": injectData,
             "data-include": includeData,
             "data-method": injectMethods,
+            "data-for"   : dataFor,
         }
 
     }
