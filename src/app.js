@@ -1,4 +1,11 @@
-import "./all";
+import API from "./api";
+import Component from "./component"
+import Router, {setRouter} from "./router"
+import Controller from "./controller";
+import Model from "./model";
+import TemplateEngine from "./template-engine.js";
+
+
 
 class Post extends Model {
     static getUrlConfig() {
@@ -18,7 +25,7 @@ class Post extends Model {
 class ExampleComponent extends Component {
 
     getTemplate() {
-        return "this is a template";
+        return require("./template.html");
     }
 
 }
@@ -26,20 +33,18 @@ class ExampleComponent extends Component {
 class ExampleTemplate extends Controller {
 
     getTemplate() {
-        var a = "";
 
-        for (var i = 0; i < 1; i++) {
-            a += "<div data-method='click -> test'>test</div>";
-        }
-
-
-        return a;
+        return require("./template.html");
     }
 
     load() {
 
         this.render(this.element, {
-            data: "a",
+            data: [
+                "a",
+                "b",
+                "c"
+            ],
             component: new ExampleComponent()
 
 

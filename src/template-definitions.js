@@ -41,3 +41,47 @@ export function injectMethods(element, doc, engine, selector, data, controllerCl
 
 
 }
+
+
+export function injectForData(element, doc, engine, selector, data) {
+
+    var bindDefinition = element.getAttribute("data-for-bind");
+    var source = bindDefinition.split("->")[0].trim();
+    var destination = bindDefinition.split("->")[1].trim();
+    if (destination == "text") {
+
+        console.log(data);
+
+
+        element.innerHTML = data[source];
+    } else {
+        element.setAttribute(destination, data[source]);
+    }
+
+}
+
+
+export function dataFor(element, doc, engine, selector, data, controllerClass) {
+
+    var forDefinition = element.getAttribute("data-for");
+
+    var varName = forDefinition.split("->")[0].trim();
+    var dataName = forDefinition.split("->")[1].trim();
+
+
+    var childElement = element.children[0];
+
+    element.innerHTML = "";
+
+    for (var i = 0; i < data[dataName].length; i++) {
+
+        var newData = {};
+        newData[varName] = data[dataName][i];
+        injectForData(childElement, doc, engine, selector, newData);
+        element.innerHTML += childElement.outerHTML;
+
+
+    }
+
+
+}
