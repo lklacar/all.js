@@ -34,17 +34,13 @@ class ExampleTemplate extends Controller {
 
     getTemplate() {
 
-        return require("./template.html");
+        return require("./a.jade");
     }
 
     load() {
 
         this.render(this.element, {
-            data: [
-                "a",
-                "b",
-                "c"
-            ],
+            variable: "test",
             component: new ExampleComponent()
 
 

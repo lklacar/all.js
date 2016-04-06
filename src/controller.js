@@ -21,15 +21,8 @@ export default class Controller {
     render(selector, data) {
 
 
-        var html = this.getTemplate();
+        $(selector).html(this.getTemplate()(data));
 
-
-        var parser = new DOMParser();
-        var doc = parser.parseFromString(html, "text/html");
-
-        var templateEngine = new TemplateEngine();
-
-        templateEngine.traverse(doc, doc, templateEngine, selector, data, this);
 
     }
 
