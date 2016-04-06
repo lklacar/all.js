@@ -1,5 +1,5 @@
 import $ from "jquery"
-import {API} from "./api.js";
+import API from "./api"
 import {includeData, injectData} from "./template-definitions.js";
 import TemplateEngine from "./template-engine.js";
 

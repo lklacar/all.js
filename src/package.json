@@ -1,6 +1,6 @@
 {
   "name": "all.js",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "all.js framework",
   "main": "app.js",
   "scripts": {
