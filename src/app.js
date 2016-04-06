@@ -1,9 +1,4 @@
-import Model from "./model.js"
-import Controller from "./controller.js";
-import $ from "jquery";
-import Router, {setRouter} from "./router.js"
-import Component from "./component"
-
+import "./all";
 
 class Post extends Model {
     static getUrlConfig() {
