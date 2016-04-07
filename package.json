@@ -17,6 +17,13 @@
     "webpack": "^1.12.14"
   },
   "dependencies": {
-    "jquery": "^2.2.2"
+    "ent": "^2.2.0",
+    "html2hscript": "^2.0.1",
+    "htmlparser2": "^3.9.0",
+    "is-empty": "^1.0.0",
+    "jquery": "^2.2.2",
+    "json-loader": "^0.5.4",
+    "to-camel-case": "^1.0.0",
+    "virtual-dom": "^2.1.1"
   }
 }

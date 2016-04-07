@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    entry: './src/app.js',
+    entry: './src/template.js',
     output: {filename: './build/app.js'},
     module: {
         loaders: [
@@ -20,7 +20,8 @@ module.exports = {
             },
             {test: /\.css$/, loader: "style-loader!css-loader"},
             {test: /\.png$/, loader: "url-loader?limit=100000"},
-            {test: /\.jpg$/, loader: "file-loader"}
+            {test: /\.jpg$/, loader: "file-loader"},
+            {test: /\.json/, loader: "json-loader"}
         ]
     },
 };
