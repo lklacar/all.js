@@ -10,7 +10,10 @@ var watch = WatchJS.watch;
 var unwatch = WatchJS.unwatch;
 var callWatchers = WatchJS.callWatchers;
 var h = require("virtual-dom/h");
+
+
 var VText = require('virtual-dom/vnode/vtext');
+var VNode = require('virtual-dom/vnode/vnode');
 
 
 class VirtualDomStructure {
@@ -61,18 +64,18 @@ class VirtualDomStructure {
             var varName = bindDefinition.split("->")[0].trim();
 
 
-            var oldNode = $.extend({}, node);
-
             var oldVirtualDom = this.html2virtualdom(createElement(this.virtualDom).outerHTML);
 
             if (varName == modifiedDataKey) {
 
 
-                node.children = [h('div', [modifiedDataValue])];
+                node.children = [new VText(modifiedDataValue)];
 
 
                 console.log(oldVirtualDom);
                 console.log(this.virtualDom);
+                console.log(node);
+                console.log("\n");
 
 
                 var patches = diff(oldVirtualDom, this.virtualDom);
@@ -115,7 +118,7 @@ $(document).ready(function () {
 
 
     virtualDomStructure.render(data);
-    
+
     setInterval(function () {
         data['count']++;
     }, 1000);
