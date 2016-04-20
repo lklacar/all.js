@@ -27,7 +27,7 @@ class VirtualDomStructure {
     }
 
     html2virtualdom(html) {
-        var virtualDom;
+        var virtualDom = {};
 
         parser(html, function (err, hscript) {
             virtualDom = eval(hscript)
@@ -37,17 +37,47 @@ class VirtualDomStructure {
 
     render(data) {
 
+        this.firstRender(this.virtualDom, data);
+
         watch(data, function (e) {
-
-
             this.updateModified(this.virtualDom, e, data[e])
-
         }.bind(this));
 
 
         document.querySelector(this.selector).appendChild(this.rootNode);
     }
 
+
+    firstRender(node, data) {
+
+        if (node.children == undefined)
+            return;
+
+
+        if (node.properties.dataset) {
+
+            // Bind
+            var bindDefinition = node.properties.dataset.bind;
+            var varName = bindDefinition.split("->")[0].trim();
+
+
+            var oldVirtualDom = this.html2virtualdom(createElement(this.virtualDom).outerHTML);
+
+
+            node.children = [new VText(data[varName])];
+
+            var patches = diff(oldVirtualDom, this.virtualDom);
+            this.rootNode = patch(this.rootNode, patches);
+
+        }
+
+        for (var i = 0; i < node.children.length; i++) {
+            var childNode = node.children[i];
+            this.firstRender(childNode, data);
+        }
+
+
+    }
 
     updateModified(node, modifiedDataKey, modifiedDataValue) {
 
@@ -60,7 +90,6 @@ class VirtualDomStructure {
 
             // Bind
             var bindDefinition = node.properties.dataset.bind;
-            var propertyName = bindDefinition.split("->")[1].trim();
             var varName = bindDefinition.split("->")[0].trim();
 
 
@@ -68,32 +97,17 @@ class VirtualDomStructure {
 
             if (varName == modifiedDataKey) {
 
-
                 node.children = [new VText(modifiedDataValue)];
 
-
-                console.log(oldVirtualDom);
-                console.log(this.virtualDom);
-                console.log(node);
-                console.log("\n");
-
-
                 var patches = diff(oldVirtualDom, this.virtualDom);
-
-
                 this.rootNode = patch(this.rootNode, patches);
-
             }
-
-
         }
-
 
         for (var i = 0; i < node.children.length; i++) {
             var childNode = node.children[i];
             this.updateModified(childNode, modifiedDataKey, modifiedDataValue);
         }
-
     }
 
     update(newHtml) {
@@ -103,25 +117,26 @@ class VirtualDomStructure {
         this.virtualDom = newVirtualDom;
     }
 
-
 }
 
 
-$(document).ready(function () {
+export default class Template {
+    constructor(element) {
+        this.virtualDomStructure = new VirtualDomStructure(element, this.getHtml());
+
+    }
+
+    load() {
+
+    }
+
+    getHtml() {
+
+    }
+
+    render(data) {
+        this.virtualDomStructure.render(data)
+    }
 
 
-    var virtualDomStructure = new VirtualDomStructure("body", "<div><h1>Count</h1><h1 data-bind='count -> text'></h1></div>");
-
-    var data = {
-        count: 1
-    };
-
-
-    virtualDomStructure.render(data);
-
-    setInterval(function () {
-        data['count']++;
-    }, 1000);
-
-
-});
+}

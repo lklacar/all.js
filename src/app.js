@@ -4,65 +4,33 @@ import Router, {setRouter} from "./router"
 import Controller from "./controller";
 import Model from "./model";
 import TemplateEngine from "./template-engine.js";
+import Template from "./template";
 
-
-
-class Post extends Model {
-    static getUrlConfig() {
-        var base = "http://localhost:8000/api/";
-        return {
-            CREATE: base + "posts/",
-            GET: base + "posts/<id>",
-            ALL: base + "posts/",
-            UPDATE: base + "posts/<id>",
-            DELETE_ONE: base + "posts/<id>",
-            DELETE_ALL: base + "posts/"
-        }
-    }
-}
-
-
-class ExampleComponent extends Component {
-
-    getTemplate() {
-        return require("./template.html");
-    }
-
-}
-
-class ExampleTemplate extends Controller {
-
-    getTemplate() {
-
-        return require("./template.html");
-    }
+class Example extends Template {
 
     load() {
+        var data = {count: 1};
 
-        this.render(this.element, {
-            data: [
-                "a",
-                "b",
-                "c"
-            ],
-            component: new ExampleComponent()
+        setInterval(function () {
+            data['count']++;
+
+        }, 1000);
 
 
-        });
+        this.render(data)
+    }
+
+    getHtml() {
+        return "<div><h1>Count</h1><h1 data-bind='count -> text'></h1></div>";
 
     }
 
 
-    test() {
-        alert('test');
-    }
 }
 
 
 var router = new Router('body');
 
-
-router.registerRoute("", ExampleTemplate);
-
+router.registerRoute("", Example);
 
 setRouter(router);
