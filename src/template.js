@@ -23,19 +23,12 @@ class Template {
 
     /**
      * Sets data and triggers onDataChange
-     * @param obj Data
+     * @param key Data key
+     * @param value Data valye
      */
-    setData(obj) {
-
-        for (var key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                var value = obj[key];
-
-                this.data[key] = value;
-                this.onDataChange(key, value);
-            }
-
-        }
+    setData(key, value) {
+        this.data[key] = value;
+        this.onDataChange(key, value);
     }
 
     /**
@@ -192,21 +185,16 @@ export default class ExampleTemplate extends Template {
 
     load() {
         var i = 0;
-        this.setData({
-            count: 0,
-        });
-
+        this.setData('count', 0);
         setInterval(function () {
-            this.setData({a: i++});
+            this.setData("a", i++);
         }.bind(this), 1000);
 
     }
 
     //noinspection JSMethodCanBeStatic
     onClick() {
-        this.setData({
-            count: this.data.count + 1,
-        });
+        this.setData('count', this.data.count + 1)
     }
 
 
