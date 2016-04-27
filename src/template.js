@@ -1,141 +1,200 @@
 import $ from "jquery";
-import parser from "./html2hscript";
-import diff from "virtual-dom/diff";
-import patch from "virtual-dom/patch";
-import createElement from "virtual-dom/create-element";
 
 
-var WatchJS = require("./watch");
-var watch = WatchJS.watch;
-var unwatch = WatchJS.unwatch;
-var callWatchers = WatchJS.callWatchers;
-var h = require("virtual-dom/h");
+function selectElementById(id) {
+    return $('*[data-alljsid="' + id + '"]')
+}
+
+class Template {
 
 
-var VText = require('virtual-dom/vnode/vtext');
-var VNode = require('virtual-dom/vnode/vnode');
+    constructor() {
+        this.data = {}
+        this.bindings = {};
+    }
+
+    /**
+     * Must implement.
+     * Should return html template.
+     */
+    getHtml() {
+        throw "Not implemented"
+    }
+
+    /**
+     * Sets data and triggers onDataChange
+     * @param key Data key
+     * @param value Data valye
+     */
+    setData(key, value) {
+        this.data[key] = value;
+        this.onDataChange(key, value);
+    }
+
+    /**
+     * Is triggered every time the user calls setData
+     * @param key
+     * @param value
+     */
+    onDataChange(key, value) {
+        for (var nodeKey in this.bindings) {
+            if (this.bindings.hasOwnProperty(nodeKey)) {
+                if (this.bindings[nodeKey] == key) {
+                    $('*[data-alljsid="' + nodeKey + '"]').text(value);
+                }
+            }
+        }
+    }
+
+    /**
+     * Should implement
+     * Code will execute right before the rendering. Should be used to set data using setData(key, value);
+     */
+    load() {
+        throw "Not implemented"
+    }
+
+    /**
+     * Renders element on the screen
+     * @param element Element which will contain the template
+     */
+    render(element) {
+        this.load();
+
+        var html = this.getHtml();
+        var $html = $(html);
 
 
-class VirtualDomStructure {
+        this.traverse($html, [
+            this.generateUniqueNodeId,
 
-    constructor(selector, html) {
-        this.virtualDom = this.html2virtualdom(html);
-        this.rootNode = createElement(this.virtualDom);
-        this.selector = selector;
+        ], -1);
+
+        element.html($html[0].outerHTML);
+
+        this.traverse($html, [
+            this.bindData,
+            this.bindEvent,
+        ], -1);
 
 
     }
 
-    html2virtualdom(html) {
-        var virtualDom = {};
+    /**
+     * Binds defined event to method defined in extended class
+     * @param node
+     * @param index
+     */
+    bindEvent(node, index) {
+        if (!node.attr("data-on"))
+            return;
 
-        parser(html, function (err, hscript) {
-            virtualDom = eval(hscript)
-        });
-        return virtualDom;
+        var bindDefinition = node.attr("data-on");
+        var eventName = bindDefinition.split("->")[0].trim();
+        var callback = bindDefinition.split("->")[1].trim()
+        var nodeId = node.attr('data-alljsid');
+
+        selectElementById(nodeId).on(eventName, eval('this.' + callback).bind(this));
     }
 
-    render(data) {
+    //noinspection JSMethodCanBeStatic
+    /**
+     * Generates unique id for the node from parents id
+     * @param node - node to process
+     * @param index - node index in the parent element
+     */
+    generateUniqueNodeId(node, index) {
+        if (index == -1) { //if root element, set id to 0
+            node.attr("data-alljsid", '0');
+            return;
+        }
 
-        this.firstRender(this.virtualDom, data);
+        var id = node.parent().attr("data-alljsid") + "." + index;
+        $(node).attr("data-alljsid", id);
+    }
 
-        watch(data, function (e) {
-            this.updateModified(this.virtualDom, e, data[e])
+    //noinspection JSMethodCanBeStatic
+    /**
+     * Logs currently processed node to the console
+     * @param node - node to process
+     * @param index - node index in the parent element
+     */
+    logNode(node, index) {
+        console.log(node, index);
+    }
+
+
+    /**
+     * Binds data
+     * @param node
+     * @param index
+     */
+    bindData(node, index) {
+        if (!node.attr("data-bind"))
+            return;
+
+        var bindDefinition = node.attr("data-bind");
+        var dataKey = bindDefinition.split("->")[0].trim();
+        var propertyName = bindDefinition.split("->")[1].trim();
+        var dataValue = this.data[dataKey];
+        var nodeId = node.attr('data-alljsid');
+
+        if (propertyName == "text") {
+            node.text(dataValue);
+        } else {
+            node.attr(propertyName, dataValue);
+        }
+
+        this.bindings[nodeId] = dataKey;
+
+
+    }
+
+    /**
+     * Traverses whole dom tree
+     * @param node - node currently being processed
+     * @param callbacks - list of callbacks to apply on the current node
+     * @param index - node index in the parent element
+     */
+    traverse(node, callbacks, index) {
+
+        // Call every callback for given node
+        $.each(callbacks, function (callbackIndex, callbackObject) {
+            callbackObject.bind(this)(node, index);
+        }.bind(this));
+
+        // Traverse further
+        $.each(node.children(), function (nodeIndex, nodeObject) {
+            this.traverse($(nodeObject), callbacks, nodeIndex);
         }.bind(this));
 
 
-        document.querySelector(this.selector).appendChild(this.rootNode);
     }
 
-
-    firstRender(node, data) {
-
-        if (node.children == undefined)
-            return;
-
-
-        if (node.properties.dataset) {
-
-            // Bind
-            var bindDefinition = node.properties.dataset.bind;
-            var varName = bindDefinition.split("->")[0].trim();
-
-
-            var oldVirtualDom = this.html2virtualdom(createElement(this.virtualDom).outerHTML);
-
-
-            node.children = [new VText(data[varName])];
-
-            var patches = diff(oldVirtualDom, this.virtualDom);
-            this.rootNode = patch(this.rootNode, patches);
-
-        }
-
-        for (var i = 0; i < node.children.length; i++) {
-            var childNode = node.children[i];
-            this.firstRender(childNode, data);
-        }
-
-
-    }
-
-    updateModified(node, modifiedDataKey, modifiedDataValue) {
-
-
-        if (node.children == undefined)
-            return;
-
-
-        if (node.properties.dataset) {
-
-            // Bind
-            var bindDefinition = node.properties.dataset.bind;
-            var varName = bindDefinition.split("->")[0].trim();
-
-
-            var oldVirtualDom = this.html2virtualdom(createElement(this.virtualDom).outerHTML);
-
-            if (varName == modifiedDataKey) {
-
-                node.children = [new VText(modifiedDataValue)];
-
-                var patches = diff(oldVirtualDom, this.virtualDom);
-                this.rootNode = patch(this.rootNode, patches);
-            }
-        }
-
-        for (var i = 0; i < node.children.length; i++) {
-            var childNode = node.children[i];
-            this.updateModified(childNode, modifiedDataKey, modifiedDataValue);
-        }
-    }
-
-    update(newHtml) {
-        var newVirtualDom = this.html2virtualdom(newHtml);
-        var patches = diff(this.virtualDom, newVirtualDom);
-        this.rootNode = patch(this.rootNode, patches);
-        this.virtualDom = newVirtualDom;
-    }
 
 }
 
 
-export default class Template {
-    constructor(element) {
-        this.virtualDomStructure = new VirtualDomStructure(element, this.getHtml());
-
-    }
-
-    load() {
-
-    }
+export default class ExampleTemplate extends Template {
 
     getHtml() {
+        return require("./template.html");
 
     }
 
-    render(data) {
-        this.virtualDomStructure.render(data)
+
+    load() {
+        var i = 0;
+        this.setData('count', 0);
+        setInterval(function () {
+            this.setData("a", i++);
+        }.bind(this), 1000);
+
+    }
+
+    //noinspection JSMethodCanBeStatic
+    onClick() {
+        this.setData('count', this.data.count + 1)
     }
 
 

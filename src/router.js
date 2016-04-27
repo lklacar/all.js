@@ -1,6 +1,3 @@
-import $ from "jquery";
-
-
 export default class Router {
 
     constructor(element) {
@@ -17,8 +14,8 @@ export default class Router {
     check() {
         var path = window.location.hash.substring(1);
 
-        new this.routes[path](this.element).load();
-
+        var template = new this.routes[path]();
+        template.render(this.element);
 
     }
 
