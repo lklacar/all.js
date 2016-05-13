@@ -28,7 +28,7 @@ class Template {
      */
     setData(key, value) {
         this.data[key] = value;
-        this.onDataChange(key, value);
+        this.onDataChange();
     }
 
     /**
@@ -36,12 +36,18 @@ class Template {
      * @param key
      * @param value
      */
-    onDataChange(key, value) {
+    onDataChange() {
+        // Optimize this
         for (var nodeKey in this.bindings) {
             if (this.bindings.hasOwnProperty(nodeKey)) {
-                if (this.bindings[nodeKey] == key) {
-                    $('*[data-alljsid="' + nodeKey + '"]').text(value);
-                }
+
+                var newValue = eval("this.data." + this.bindings[nodeKey] + ";");
+                var oldValue = $('*[data-alljsid="' + nodeKey + '"]').text();
+
+
+                if (oldValue != newValue)
+                    $('*[data-alljsid="' + nodeKey + '"]').text(newValue);
+
             }
         }
     }
@@ -76,6 +82,8 @@ class Template {
             this.bindData,
             this.bindEvent,
         ], -1);
+
+        this.onDataChange();
 
 
     }
@@ -186,9 +194,13 @@ export default class ExampleTemplate extends Template {
     load() {
         var i = 0;
         this.setData('count', 0);
-        setInterval(function () {
-            this.setData("a", i++);
-        }.bind(this), 1000);
+        this.setData("obj", {"a": "b"});
+
+
+        /*
+         setInterval(function () {
+         this.setData("a", i++);
+         }.bind(this), 1000);*/
 
     }
 
