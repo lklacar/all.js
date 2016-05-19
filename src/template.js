@@ -5,6 +5,14 @@ function selectElementById(id) {
     return $('*[data-alljsid="' + id + '"]')
 }
 
+function getValue(obj, str) {
+    str.split(".").forEach(function (i) {
+        obj = obj[i];
+    }.bind(this));
+
+    return obj;
+}
+
 class Template {
 
 
@@ -41,12 +49,15 @@ class Template {
         for (var nodeKey in this.bindings) {
             if (this.bindings.hasOwnProperty(nodeKey)) {
 
-                var newValue = eval("this.data." + this.bindings[nodeKey] + ";");
-                var oldValue = $('*[data-alljsid="' + nodeKey + '"]').text();
+                var element = $('*[data-alljsid="' + nodeKey + '"]')
+
+                var newValue = getValue(this.data, this.bindings[nodeKey]);
+                //var newValue = eval("this.data." + this.bindings[nodeKey] + ";");
+                var oldValue = element.text();
 
 
                 if (oldValue != newValue)
-                    $('*[data-alljsid="' + nodeKey + '"]').text(newValue);
+                    element.text(newValue);
 
             }
         }
@@ -196,17 +207,26 @@ export default class ExampleTemplate extends Template {
         this.setData('count', 0);
         this.setData("obj", {"a": "b"});
 
+        this.setData("person", {
+            name: "Luka",
+            lastname: "Klacar",
 
-        /*
-         setInterval(function () {
-         this.setData("a", i++);
-         }.bind(this), 1000);*/
 
+        });
+
+
+        setInterval(function () {
+            this.setData("a", i++);
+        }.bind(this), 1000);
     }
 
     //noinspection JSMethodCanBeStatic
     onClick() {
         this.setData('count', this.data.count + 1)
+    }
+
+    getName() {
+        return "asd";
     }
 
 
