@@ -110,10 +110,10 @@ class Template {
 
         var bindDefinition = node.attr("data-on");
         var eventName = bindDefinition.split("->")[0].trim();
-        var callback = bindDefinition.split("->")[1].trim()
+        var callback = bindDefinition.split("->")[1].trim();
         var nodeId = node.attr('data-alljsid');
 
-        selectElementById(nodeId).on(eventName, eval('this.' + callback).bind(this));
+        selectElementById(nodeId).on(eventName, this[callback].bind(this));
     }
 
     //noinspection JSMethodCanBeStatic
