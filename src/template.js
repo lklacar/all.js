@@ -36,31 +36,36 @@ class Template {
      */
     setData(key, value) {
         this.data[key] = value;
-        this.onDataChange();
+
+       
+        for (var nodeKey in this.bindings) {
+            if (this.bindings.hasOwnProperty(nodeKey)) {
+                if (this.bindings[nodeKey] == key) {
+                    this.onDataChange(nodeKey);
+                }
+            }
+        }
+
+
     }
 
     /**
      * Is triggered every time the user calls setData
-     * @param key
-     * @param value
+     * @param nodeKey
      */
-    onDataChange() {
-        // Optimize this
-        for (var nodeKey in this.bindings) {
-            if (this.bindings.hasOwnProperty(nodeKey)) {
+    onDataChange(nodeKey) {
+        if (nodeKey == undefined)
+            return;
 
-                var element = $('*[data-alljsid="' + nodeKey + '"]')
+        var element = $('*[data-alljsid="' + nodeKey + '"]');
 
-                var newValue = getValue(this.data, this.bindings[nodeKey]);
-                //var newValue = eval("this.data." + this.bindings[nodeKey] + ";");
-                var oldValue = element.text();
+        var newValue = getValue(this.data, this.bindings[nodeKey]);
+        var oldValue = element.text();
 
 
-                if (oldValue != newValue)
-                    element.text(newValue);
+        if (oldValue != newValue)
+            element.text(newValue);
 
-            }
-        }
     }
 
     /**
@@ -217,7 +222,7 @@ export default class ExampleTemplate extends Template {
 
         setInterval(function () {
             this.setData("a", i++);
-        }.bind(this), 1000);
+        }.bind(this), 100);
     }
 
     //noinspection JSMethodCanBeStatic
