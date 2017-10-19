@@ -1,5 +1,3 @@
-import $ from "jquery";
-
 import API from "./api.js";
 
 export default class Model {
@@ -16,9 +14,9 @@ export default class Model {
     }
 
     setup(data) {
-        var keys = Object.keys(data);
-        for (var i = 0; i < keys.length; i++) { //noinspection JSUnfilteredForInLoop
-            var key = keys[i];
+        const keys = Object.keys(data);
+        for (let i = 0; i < keys.length; i++) { //noinspection JSUnfilteredForInLoop
+            const key = keys[i];
             this[key] = data[key]
         }
     }
@@ -33,10 +31,10 @@ export default class Model {
 
     static all(callback) {
         API.get(this.getUrlConfig().ALL, function (array) {
-            var data = [];
-            for (var i = 0; i < array.length; i++) {
-                var elem = array[i];
-                var temp = new this();
+            const data = [];
+            for (let i = 0; i < array.length; i++) {
+                const elem = array[i];
+                const temp = new this();
                 temp.setup(elem);
                 data.push(temp);
             }
@@ -47,7 +45,7 @@ export default class Model {
     static get(id, callback) {
 
         API.get(this.getUrlConfig().GET.replace("\<id\>", id.toString() + "/"), function (data) {
-            var temp = new this();
+            const temp = new this();
             temp.setup(data);
             callback(temp);
         }.bind(this));

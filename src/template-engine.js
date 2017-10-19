@@ -6,15 +6,12 @@ export default class TemplateEngine {
 
     constructor() {
         this.handlers = {
-
             "data-bind": injectData,
             "data-include": includeData,
             "data-method": injectMethods,
-            "data-for"   : dataFor,
+            "data-for": dataFor,
         }
-
     }
-
 
     traverse(element, doc, engine, selector, data, controllerClass) {
 
@@ -26,11 +23,9 @@ export default class TemplateEngine {
 
         }.bind(this));
 
+        const children = element.children;
 
-        var children = element.children;
-
-
-        for (var i = 0; i < children.length; i++) {
+        for (let i = 0; i < children.length; i++) {
             this.traverse(children[i], doc, engine, selector, data, controllerClass);
         }
     }

@@ -5,18 +5,14 @@ export default class Router {
         this.element = element;
     }
 
-
     registerRoute(path, callback) {
         this.routes[path] = callback;
     }
 
-
     check() {
-        var path = window.location.hash.substring(1);
-
-        var template = new this.routes[path]();
+        const path = window.location.hash.substring(1);
+        const template = new this.routes[path]();
         template.render(this.element);
-
     }
 
 }

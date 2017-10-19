@@ -1,8 +1,7 @@
 import $ from "jquery";
 
-
 function selectElementById(id) {
-    return $('*[data-alljsid="' + id + '"]')
+    return document.querySelectorAll('[data-alljsid="' + id + '"]');
 }
 
 function getValue(obj, str) {
@@ -15,9 +14,8 @@ function getValue(obj, str) {
 
 class Template {
 
-
     constructor() {
-        this.data = {}
+        this.data = {};
         this.bindings = {};
     }
 
@@ -37,16 +35,14 @@ class Template {
     setData(key, value) {
         this.data[key] = value;
 
-       
-        for (var nodeKey in this.bindings) {
+
+        for (const nodeKey in this.bindings) {
             if (this.bindings.hasOwnProperty(nodeKey)) {
-                if (this.bindings[nodeKey] == key) {
+                if (this.bindings[nodeKey] === key) {
                     this.onDataChange(nodeKey);
                 }
             }
         }
-
-
     }
 
     /**
@@ -54,7 +50,7 @@ class Template {
      * @param nodeKey
      */
     onDataChange(nodeKey) {
-        if (nodeKey == undefined)
+        if (nodeKey === undefined)
             return;
 
         var element = $('*[data-alljsid="' + nodeKey + '"]');
@@ -63,7 +59,7 @@ class Template {
         var oldValue = element.text();
 
 
-        if (oldValue != newValue)
+        if (oldValue !== newValue)
             element.text(newValue);
 
     }
@@ -83,13 +79,11 @@ class Template {
     render(element) {
         this.load();
 
-        var html = this.getHtml();
-        var $html = $(html);
-
+        const html = this.getHtml();
+        const $html = $(html);
 
         this.traverse($html, [
             this.generateUniqueNodeId,
-
         ], -1);
 
         element.html($html[0].outerHTML);
@@ -113,12 +107,12 @@ class Template {
         if (!node.attr("data-on"))
             return;
 
-        var bindDefinition = node.attr("data-on");
-        var eventName = bindDefinition.split("->")[0].trim();
-        var callback = bindDefinition.split("->")[1].trim();
-        var nodeId = node.attr('data-alljsid');
+        const bindDefinition = node.attr("data-on");
+        const eventName = bindDefinition.split("->")[0].trim();
+        const callback = bindDefinition.split("->")[1].trim();
+        const nodeId = node.attr('data-alljsid');
 
-        selectElementById(nodeId).on(eventName, this[callback].bind(this));
+        selectElementById(nodeId)[0].addEventListener(eventName, this[callback].bind(this));
     }
 
     //noinspection JSMethodCanBeStatic
@@ -128,7 +122,7 @@ class Template {
      * @param index - node index in the parent element
      */
     generateUniqueNodeId(node, index) {
-        if (index == -1) { //if root element, set id to 0
+        if (index === -1) { //if root element, set id to 0
             node.attr("data-alljsid", '0');
             return;
         }
@@ -157,13 +151,13 @@ class Template {
         if (!node.attr("data-bind"))
             return;
 
-        var bindDefinition = node.attr("data-bind");
-        var dataKey = bindDefinition.split("->")[0].trim();
-        var propertyName = bindDefinition.split("->")[1].trim();
-        var dataValue = this.data[dataKey];
-        var nodeId = node.attr('data-alljsid');
+        const bindDefinition = node.attr("data-bind");
+        const dataKey = bindDefinition.split("->")[0].trim();
+        const propertyName = bindDefinition.split("->")[1].trim();
+        const dataValue = this.data[dataKey];
+        const nodeId = node.attr('data-alljsid');
 
-        if (propertyName == "text") {
+        if (propertyName === "text") {
             node.text(dataValue);
         } else {
             node.attr(propertyName, dataValue);
@@ -191,11 +185,7 @@ class Template {
         $.each(node.children(), function (nodeIndex, nodeObject) {
             this.traverse($(nodeObject), callbacks, nodeIndex);
         }.bind(this));
-
-
     }
-
-
 }
 
 
@@ -203,20 +193,16 @@ export default class ExampleTemplate extends Template {
 
     getHtml() {
         return require("./template.html");
-
     }
 
-
     load() {
-        var i = 0;
+        let i = 0;
         this.setData('count', 0);
         this.setData("obj", {"a": "b"});
 
         this.setData("person", {
             name: "Luka",
             lastname: "Klacar",
-
-
         });
 
 
@@ -233,6 +219,5 @@ export default class ExampleTemplate extends Template {
     getName() {
         return "asd";
     }
-
 
 }

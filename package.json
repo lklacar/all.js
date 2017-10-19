@@ -21,11 +21,6 @@
     "webpack": "^1.13.0"
   },
   "dependencies": {
-    "ent": "^2.2.0",
-    "htmlparser2": "^3.9.0",
-    "is-empty": "^1.0.0",
-    "jquery": "^2.2.3",
-    "to-camel-case": "^1.0.0",
-    "virtual-dom": "^2.1.1"
+    "jquery": "^3.2.1"
   }
 }
