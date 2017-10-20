@@ -16,7 +16,7 @@ module.exports = {
             },
             {
                 test: /\.html$/,
-                loader: "html"
+                loader: "html-loader"
             },
             {test: /\.css$/, loader: "style-loader!css-loader"},
             {test: /\.png$/, loader: "url-loader?limit=100000"},
